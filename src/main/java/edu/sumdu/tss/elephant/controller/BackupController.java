@@ -18,9 +18,13 @@ public class BackupController extends AbstractController {
 
     public static void restore(Context context) {
         Backup point = setupPoint(context);
-        BackupService.restore(currentUser(context).getUsername(), point.getDatabase(), point.getPoint());
-        context.sessionAttribute(Keys.INFO_KEY, "Restore performed successfully");
-        context.redirect(BASIC_PAGE.replace("{database}", point.getDatabase()));
+        BackupService.restore(currentUser(context).getUsername(),
+                point.getDatabase(),
+                point.getPoint());
+        context.sessionAttribute(Keys.INFO_KEY,
+                "Restore performed successfully");
+        context.redirect(BASIC_PAGE.replace("{database}",
+                point.getDatabase()));
     }
 
     public static void create(Context context) {
@@ -28,7 +32,7 @@ public class BackupController extends AbstractController {
         var currentUser = currentUser(context);
         int currentBackupCount = BackupService.list(dbName).size();
         if (currentBackupCount >= currentUser.role().maxBackupsPerDB()) {
-            ViewHelper.softError("You limit reached",context);
+            ViewHelper.softError("You limit reached", context);
             return;
         }
 
@@ -36,7 +40,7 @@ public class BackupController extends AbstractController {
         if (point == null) {
             point = context.pathParam("point");
         }
-        if (point==null || point.isBlank()){
+        if (point.isBlank()) {
             ViewHelper.softError("Point name can't be empty", context);
             return;
         }
@@ -48,7 +52,9 @@ public class BackupController extends AbstractController {
 
     public static void delete(Context context) {
         Backup point = setupPoint(context);
-        BackupService.delete(currentUser(context).getUsername(), point.getDatabase(), point.getPoint());
+        BackupService.delete(currentUser(context).getUsername(),
+                point.getDatabase(),
+                point.getPoint());
         context.redirect(BASIC_PAGE.replace("{database}", point.getDatabase()));
     }
 
@@ -72,8 +78,14 @@ public class BackupController extends AbstractController {
     public void register(Javalin app) {
         app.get(BASIC_PAGE, BackupController::index, UserRole.AUTHED);
         app.post(BASIC_PAGE, BackupController::create, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "{point}/create", BackupController::create, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "{point}/reset", BackupController::restore, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "{point}/delete", BackupController::delete, UserRole.AUTHED);
+        app.post(BASIC_PAGE + "{point}/create",
+                BackupController::create,
+                UserRole.AUTHED);
+        app.post(BASIC_PAGE + "{point}/reset",
+                BackupController::restore,
+                UserRole.AUTHED);
+        app.post(BASIC_PAGE + "{point}/delete",
+                BackupController::delete,
+                UserRole.AUTHED);
     }
 }

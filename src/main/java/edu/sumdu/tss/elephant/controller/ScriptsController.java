@@ -103,9 +103,9 @@ public class ScriptsController extends AbstractController {
                     result = "ok";
                 } catch (SQLException ex) {
                     result =
-                            ex.getSQLState() +
-                                    ex.getErrorCode() +
-                                    ex.getMessage();
+                            ex.getSQLState()
+                                    + ex.getErrorCode()
+                                    + ex.getMessage();
                 }
                 list.add(new Pair<>(line, result));
             }

@@ -17,7 +17,8 @@ public class ResetPasswordPage extends BasePage{
     @FindBy(xpath = "//button[@class='btn']")
     private WebElement sendButton;
 
-    @FindBy(xpath = "//div[@class=\"alert alert-success alert-dismissible fade show\"]")
+    @FindBy(xpath = "//div[@class=" +
+            "\"alert alert-success alert-dismissible fade show\"]")
     private WebElement emailMessage;
 
     public ResetPasswordPage(WebDriver webDriver) {
@@ -30,7 +31,7 @@ public class ResetPasswordPage extends BasePage{
         return new ResetPasswordPage(webDriver);
     }
 
-    public boolean findMessage(){
+    public boolean findMessage() {
         emailMessage = new WebDriverWait(webDriver, 10)
                 .until(ExpectedConditions.visibilityOf(emailMessage));
 

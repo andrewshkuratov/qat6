@@ -49,18 +49,18 @@ public class ScriptsPage extends BasePage {
         return new ScriptsPage(webDriver);
     }
 
-    public boolean check(){
+    public boolean check() {
         return scriptName.isDisplayed();
     }
-     public boolean checkDeletion(){
+     public boolean checkDeletion() {
         return noScriptsMsg.isDisplayed();
      }
 
-    public boolean scriptAmountErrorIsDisplayed(){
+    public boolean scriptAmountErrorIsDisplayed() {
         return scriptLimitAlert.isDisplayed();
     }
 
-    public ScriptsPage deleteScript(){
+    public ScriptsPage deleteScript() {
         deleteScript.click();
         return new ScriptsPage(webDriver);
     }
@@ -68,7 +68,7 @@ public class ScriptsPage extends BasePage {
     @FindBy(xpath = "//ion-icon[@name='play']")
     private WebElement runScript;
 
-    public RunScriptsPage runScript(){
+    public RunScriptsPage runScript() {
         runScript.click();
         return new RunScriptsPage(webDriver);
     }

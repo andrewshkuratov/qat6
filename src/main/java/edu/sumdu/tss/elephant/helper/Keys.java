@@ -12,12 +12,16 @@ import java.util.Properties;
 public class Keys {
 
     public static final String[] PARAMS = {
-            "DB.LOCAL_PATH", "DB.PORT", "DB.URL", "DB.NAME", "DB.USERNAME", "DB.OS_USER", "DB.HOST",
+            "DB.LOCAL_PATH", "DB.PORT",
+            "DB.URL", "DB.NAME", "DB.USERNAME",
+            "DB.OS_USER", "DB.HOST",
             "APP.URL", "APP.PORT",
-            "EMAIL.HOST", "EMAIL.PORT", "EMAIL.USER", "EMAIL.FROM", "EMAIL.SSL",
+            "EMAIL.HOST", "EMAIL.PORT",
+            "EMAIL.USER", "EMAIL.FROM", "EMAIL.SSL",
             "DEFAULT_LANG", "ENV"
     };
-    public static final String[] SECURED_PARAMS = {"DB.PASSWORD", "EMAIL.PASSWORD"};
+    public static final String[] SECURED_PARAMS =
+            {"DB.PASSWORD", "EMAIL.PASSWORD"};
     public static final String SESSION_CURRENT_USER_KEY = "currentUser";
     public static final String BREADCRUMB_KEY = "breadcrumb";
     public static final String DB_KEY = "database";
@@ -38,7 +42,9 @@ public class Keys {
             for (String key : PARAMS) {
                 String value = env.getOrDefault(key, app_properties.getProperty(key));
                 if (value == null) {
-                    throw new IllegalArgumentException(String.format("Property %s not found in %s and or system environment", key, properties.getPath()));
+                    throw new IllegalArgumentException(String
+                            .format("Property %s not found in %s and or system environment", key,
+                                    properties.getPath()));
                 }
                 keys.put(key, value);
             }
@@ -49,7 +55,11 @@ public class Keys {
                     if (value != null) {
                         JavalinLogger.warn(String.format("Property %s set in config file. It is insecure", key));
                     } else {
-                        throw new IllegalArgumentException(String.format("Property %s not found in %s and or system environment (last - preferable)", key, properties.getPath()));
+                        throw new IllegalArgumentException(String
+                                .format(
+                                        "Property %s not found in %s" +
+                                                " and or system environment (last - preferable)",
+                                        key, properties.getPath()));
                     }
                     keys.put(key, value);
                 }
@@ -61,16 +71,19 @@ public class Keys {
 
     public static String get(String key) {
         if (keys == null) {
-            throw new RuntimeException("Add path to config.property to your application on init");
+            throw new RuntimeException(
+                    "Add path to config.property to your application on init");
         }
 
         if (!keys.containsKey(key)) {
-            throw new RuntimeException(String.format("Unknown key %s in app properties", key));
+            throw new RuntimeException(String.format(
+                    "Unknown key %s in app properties", key));
         }
 
         String value = keys.get(key);
         if (value.isEmpty()) {
-            throw new RuntimeException(String.format("No value for key %s", key));
+            throw new RuntimeException(String
+                    .format("No value for key %s", key));
         }
         return value;
     }

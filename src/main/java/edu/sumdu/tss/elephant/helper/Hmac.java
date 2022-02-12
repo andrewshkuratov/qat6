@@ -19,7 +19,8 @@ public class Hmac {
 
     public static String calculate(String data, String key)
             throws NoSuchAlgorithmException, InvalidKeyException {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), HMAC_SHA384);
+        SecretKeySpec secretKeySpec =
+                new SecretKeySpec(key.getBytes(), HMAC_SHA384);
         Mac mac = Mac.getInstance(HMAC_SHA384);
         mac.init(secretKeySpec);
         return toHexString(mac.doFinal(data.getBytes()));

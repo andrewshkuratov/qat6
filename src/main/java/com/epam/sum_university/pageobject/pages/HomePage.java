@@ -90,10 +90,13 @@ public class HomePage extends BasePage {
         FileUtils.cleanDirectory(dir);
     }
     public void capture(String s) throws IOException {
-        File source = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+        File source = ((TakesScreenshot) webDriver)
+                .getScreenshotAs(OutputType.FILE);
         LocalDateTime time = LocalDateTime.now();
-        String formatDate = time.format(DateTimeFormatter.ofPattern("dd_MM_yy-HH_mm_ss"));
-        File dir = new File("src/test/resources/screenshots/" + s + "/");
+        String formatDate = time.format(DateTimeFormatter
+                .ofPattern("dd_MM_yy-HH_mm_ss"));
+        File dir = new File(
+                "src/test/resources/screenshots/" + s + "/");
         String path = "src/test/resources/screenshots/"
                 + s
                 + "/"

@@ -18,7 +18,10 @@ public class CSRFTokenService {
         }
         siteWideToken = System.getenv("CSRF_SECRET");
         if (siteWideToken == null || siteWideToken.isEmpty()) {
-            throw new RuntimeException("Three is no environment variable CSRF_SECRET \n See: https://www.jetbrains.com/help/objc/add-environment-variables-and-program-arguments.html#add-environment-variables");
+            throw new RuntimeException("Three is no environment variable CSRF_SECRET" +
+                    " \n See: https://www.jetbrains.com/help/objc/" +
+                    "add-environment-variables-and-program-arguments." +
+                    "html#add-environment-variables");
         }
         return siteWideToken;
     }
@@ -26,7 +29,8 @@ public class CSRFTokenService {
     @SuppressWarnings("UnstableApiUsage")
     private static String generateToken(String sessionID, long time) {
         String data = sessionID + time;
-        HashFunction hash = Hashing.hmacSha256(getSiteWideToken().getBytes(StandardCharsets.UTF_8));
+        HashFunction hash = Hashing.hmacSha256(getSiteWideToken()
+                .getBytes(StandardCharsets.UTF_8));
         String token = hash.hashString(data, StandardCharsets.UTF_8).toString();
         return token + '-' + time;
     }

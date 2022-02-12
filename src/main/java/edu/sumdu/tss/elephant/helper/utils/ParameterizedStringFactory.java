@@ -33,7 +33,9 @@ public record ParameterizedStringFactory(String template) {
         public String toString() {
             String result = template;
             for (Map.Entry<String, String> entry : params.entrySet()) {
-                result = result.replaceAll(":" + entry.getKey(), entry.getValue());
+                result = result.replaceAll(
+                        ":" + entry.getKey(),
+                        entry.getValue());
             }
             return result;
         }

@@ -16,26 +16,41 @@ import java.util.List;
 
 public class BackupService {
 
-    private static final String LIST_BACKUP_SQL = "SELECT * from backups where database = :database";
-    private static final String GET_BY_NAME_SQL = "SELECT * from backups where database = :database and point = :point";
+    private static final String LIST_BACKUP_SQL = "SELECT * " +
+            "from backups " +
+            "where database = :database";
+    private static final String GET_BY_NAME_SQL = "SELECT * " +
+            "from backups" +
+            " where database = :database" +
+            " and point = :point";
     private static final String INSERT_SQL =
             """
                     insert into backups(database, point, status, "createdAt", "updatedAt")
-                    values (:database, :point, :status, :createdAt, :updatedAt)  ON CONFLICT(database, point) DO UPDATE\s
+                    values (:database, :point, :status, :createdAt, :updatedAt)
+                    ON CONFLICT(database, point) DO UPDATE\s
                     SET status = excluded.status,\s
                        "updatedAt" = now();""";
-    private static final String DELETE_BACKUP = "DELETE FROM backups WHERE database = :database and point = :point;";
-    private static final ParameterizedStringFactory DROP_DB = new ParameterizedStringFactory("DROP DATABASE :database WITH (FORCE);");
+    private static final String DELETE_BACKUP = "DELETE " +
+            "FROM backups " +
+            "WHERE database = :database" +
+            "and point = :point;";
+    private static final ParameterizedStringFactory DROP_DB =
+            new ParameterizedStringFactory("DROP DATABASE :database WITH (FORCE);");
 
     public static List<Backup> list(String dbName) {
         try (Connection con = DBPool.getConnection().open()) {
-            return con.createQuery(LIST_BACKUP_SQL).addParameter("database", dbName).executeAndFetch(Backup.class);
+            return con.createQuery(LIST_BACKUP_SQL)
+                    .addParameter("database", dbName)
+                    .executeAndFetch(Backup.class);
         }
     }
 
     public static Backup byName(String database, String point) {
         try (Connection con = DBPool.getConnection().open()) {
-            Backup backup = con.createQuery(GET_BY_NAME_SQL).addParameter("database", database).addParameter("point", point).executeAndFetchFirst(Backup.class);
+            Backup backup = con.createQuery(GET_BY_NAME_SQL)
+                    .addParameter("database", database)
+                    .addParameter("point", point)
+                    .executeAndFetchFirst(Backup.class);
             if (backup == null) {
                 throw new NotFoundException("Point not found");
             }
@@ -43,7 +58,8 @@ public class BackupService {
         }
     }
 
-    public static void perform(String owner, String database, String pointName) throws BackupException {
+    public static void perform(String owner, String database, String pointName)
+            throws BackupException {
         try (Connection con = DBPool.getConnection().open()) {
             Backup point;
             try {
@@ -68,11 +84,14 @@ public class BackupService {
 
     private static void save(Backup point) {
         try (Connection con = DBPool.getConnection().open()) {
-            con.createQuery(INSERT_SQL, false).bind(point).executeUpdate();
+            con.createQuery(INSERT_SQL, false)
+                    .bind(point)
+                    .executeUpdate();
         }
     }
 
-    static public void restore(String owner, String dbName, String pointName) throws BackupException {
+    static public void restore(String owner, String dbName, String pointName)
+            throws BackupException {
         try (Connection con = DBPool.getConnection().open()) {
             Backup point = con.createQuery(GET_BY_NAME_SQL)
                     .addParameter("database", dbName)
@@ -114,13 +133,17 @@ public class BackupService {
         } catch (Exception ex) {
             throw new HttpError500(ex);
         }
-        CmdUtil.exec(String.format("pg_dump --format=custom --dbname=%s  --file=%s", DBPool.dbUtilUrl(database), path));
+        CmdUtil.exec(String.format("pg_dump --format=custom --dbname=%s  --file=%s",
+                DBPool.dbUtilUrl(database), path));
     }
 
     private static void restoreBackup(String owner, String database, String pointName) {
         String path = filePath(owner, database, pointName);
         var recreate = DatabaseService.exists(database) ? "--clean" : "";
-        CmdUtil.exec(String.format("pg_restore %s --create --dbname=%s %s", recreate, DBPool.dbUtilUrl(DBPool.DEFAULT_DATABASE), path));
+        CmdUtil.exec(String.format("pg_restore %s --create --dbname=%s %s",
+                recreate,
+                DBPool.dbUtilUrl(DBPool.DEFAULT_DATABASE),
+                path));
     }
 
     public static String filePath(String owner, String database, String pointName) {

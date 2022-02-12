@@ -30,7 +30,6 @@ public class User {
      * Use this method to crypt and set user plain password.
      *
      * setPassword do only set value ot password. Crypt in setPassword led to encryption already-encrypted value on restore from database.
-     * @param raw value of password
      */
     public void password(String password) {
         this.password = crypt(password);

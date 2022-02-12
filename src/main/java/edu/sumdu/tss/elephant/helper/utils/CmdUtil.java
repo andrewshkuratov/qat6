@@ -29,7 +29,8 @@ public class CmdUtil {
                 throw new BackupException(result.toString());
             }
         } catch (IOException | InterruptedException ex) {
-            throw (result.length() == 0) ? new BackupException(ex) : new BackupException(result.toString(), ex);
+            throw (result.length() == 0) ? new BackupException(ex) :
+                    new BackupException(result.toString(), ex);
         }
 
     }

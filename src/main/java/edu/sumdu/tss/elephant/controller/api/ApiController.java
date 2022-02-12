@@ -30,19 +30,24 @@ public final class ApiController extends AbstractController {
 
             // Parameters
             pathParams = {
-                    @OpenApiParam(name = "database", description = "your database name"),
-                    @OpenApiParam(name = "point", description = "your backup name")
+                    @OpenApiParam(name = "database",
+                            description = "your database name"),
+                    @OpenApiParam(name = "point",
+                            description = "your backup name")
             },
             headers = {
                     @OpenApiParam(name = "publickey"),
                     @OpenApiParam(name = "signature")
             },
             // Body
-            requestBody = @OpenApiRequestBody(content = @OpenApiContent(from = Backup.class)),
+            requestBody = @OpenApiRequestBody(content =
+            @OpenApiContent(from = Backup.class)),
 
             // Responses
             responses = {
-                    // responses with same status and content type will be auto-grouped to the oneOf composed scheme
+                    // responses with same status and content
+                    // type will be auto-grouped
+                    // to the oneOf composed scheme
                     @OpenApiResponse(status = "204") // No content
             }
 
@@ -51,7 +56,9 @@ public final class ApiController extends AbstractController {
         try {
             var database = verifyRights(ctx);
             var pointName = ctx.pathParam("point");
-            BackupService.perform(database.getOwner(), database.getName(), pointName);
+            BackupService.perform(database.getOwner(),
+                    database.getName(),
+                    pointName);
         } catch (AccessRestrictedException ex) {
             ctx.json(ResponseUtils.error("Can't validate user"));
             return;
@@ -63,33 +70,41 @@ public final class ApiController extends AbstractController {
     }
 
     @OpenApi(
-            requestBody = @OpenApiRequestBody(content = @OpenApiContent(from = Backup.class)),
+            requestBody = @OpenApiRequestBody(content =
+            @OpenApiContent(from = Backup.class)),
             responses = {
-                    @OpenApiResponse(status = "204", content = @OpenApiContent(from = Backup.class))
+                    @OpenApiResponse(status = "204",
+                            content = @OpenApiContent(from = Backup.class))
             }
     )
     public static void restore(final Context ctx) {
         try {
             var database = verifyRights(ctx);
             var pointName = ctx.pathParam("point");
-            BackupService.restore(database.getOwner(), database.getName(), pointName);
+            BackupService.restore(database.getOwner(),
+                    database.getName(),
+                    pointName);
         } catch (AccessRestrictedException ex) {
-            ctx.json(ResponseUtils.error("Can't validate user"));
+            ctx.json(ResponseUtils
+                    .error("Can't validate user"));
             return;
         } catch (BackupException | NotFoundException ex) {
-            ctx.json(ResponseUtils.error("Backup error" + ex.getMessage()));
+            ctx.json(ResponseUtils
+                    .error("Backup error" + ex.getMessage()));
             return;
         }
         ctx.status(204);
     }
 
-    private static Database verifyRights(final Context ctx) throws AccessRestrictedException {
+    private static Database verifyRights(final Context ctx)
+            throws AccessRestrictedException {
         String publicKey = ctx.header("publickey");
         String hmac = ctx.header("signature");
         User user = UserService.byPublicKey(publicKey);
         String path = ctx.path();
         try {
-            String checkedHmac = Hmac.calculate(path, user.getPrivateKey());
+            String checkedHmac = Hmac.calculate(path,
+                    user.getPrivateKey());
             if (hmac == null || !hmac.equals(checkedHmac)) {
                 throw new AccessRestrictedException("Invalid sign");
             }
@@ -102,8 +117,12 @@ public final class ApiController extends AbstractController {
     }
 
     public void register(final Javalin app) {
-        app.post(BASIC_PAGE + "database/{name}/create/{point}", ApiController::backup);
-        app.post(BASIC_PAGE + "database/{name}/reset/{point}", ApiController::restore);
+        app.post(BASIC_PAGE
+                        + "database/{name}/create/{point}",
+                ApiController::backup);
+        app.post(BASIC_PAGE
+                        + "database/{name}/reset/{point}",
+                ApiController::restore);
     }
 
 }

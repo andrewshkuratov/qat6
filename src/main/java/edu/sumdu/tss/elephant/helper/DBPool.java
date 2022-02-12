@@ -10,11 +10,13 @@ import java.util.Map;
 public class DBPool {
 
     public static final String DEFAULT_DATABASE = Keys.get("DB.NAME");
-    private static final HashMap<String, Pair<Long, Sql2o>> storage = new HashMap<>();
+    private static final HashMap<String, Pair<Long, Sql2o>> storage =
+            new HashMap<>();
     private static final int MAX_CONNECTION = 10;
     public static final ParameterizedStringFactory dbUrl =
             new ParameterizedStringFactory(
-                    new ParameterizedStringFactory("jdbc:postgresql://:url::port/:database")
+                    new ParameterizedStringFactory(
+                            "jdbc:postgresql://:url::port/:database")
                             .addParameter("url", Keys.get("DB.URL"))
                             .addParameter("port", Keys.get("DB.PORT"))
                             .toString());

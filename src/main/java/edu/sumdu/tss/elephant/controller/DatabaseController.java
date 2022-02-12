@@ -28,9 +28,10 @@ public class DatabaseController extends AbstractController {
 
     public static void create(Context context) {
         User user = currentUser(context);
-        int currentScriptCount = DatabaseService.forUser(user.getUsername()).size();
+        int currentScriptCount = DatabaseService
+                .forUser(user.getUsername()).size();
         if (currentScriptCount >= user.role().maxDB()) {
-            ViewHelper.softError("You limit reached",context);
+            ViewHelper.softError("You limit reached", context);
             return;
         }
 
@@ -44,15 +45,18 @@ public class DatabaseController extends AbstractController {
     public static void delete(Context context) {
         Database database = currentDB(context);
         DatabaseService.drop(database);
-        LogService.push(context, database.getName(), "Database has been dropped");
+        LogService.push(context, database.getName(),
+                "Database has been dropped");
         context.sessionAttribute(Keys.INFO_KEY, "Database has been dropped");
         context.redirect(HomeController.BASIC_PAGE);
     }
 
     @Override
     public void register(Javalin app) {
-        app.get(BASIC_PAGE + "{database}", DatabaseController::show, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "{database}/delete", DatabaseController::delete, UserRole.AUTHED);
+        app.get(BASIC_PAGE + "{database}",
+                DatabaseController::show, UserRole.AUTHED);
+        app.post(BASIC_PAGE + "{database}/delete",
+                DatabaseController::delete, UserRole.AUTHED);
         app.post(BASIC_PAGE, DatabaseController::create, UserRole.AUTHED);
     }
 

@@ -9,14 +9,17 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class ExceptionUtils {
-    private static final CharSequence SQL_UNIQ_EXCEPTION_MESSAGE = "duplicate key value violates unique constraint";
+    private static final CharSequence SQL_UNIQ_EXCEPTION_MESSAGE =
+            "duplicate key value violates unique constraint";
 
-    public static String validationMessages(io.javalin.core.validation.ValidationException ex) {
+    public static String validationMessages(io
+                                                    .javalin.core.validation.ValidationException ex) {
         StringBuilder message = new StringBuilder();
         var errors = ex.getErrors();
         message.append("<ul>");
         for (var entry : errors.entrySet()) {
-            message.append("<li><b>").append(entry.getKey()).append("</b>&nbsp;");
+            message.append("<li><b>")
+                    .append(entry.getKey()).append("</b>&nbsp;");
             for (var cause : entry.getValue()) {
                 message.append(cause.getMessage()).append(" ");
             }
@@ -27,11 +30,13 @@ public class ExceptionUtils {
     }
 
     public static boolean isSQLUniqueException(Throwable ex) {
-        if (ex.getMessage() != null && ex.getMessage().contains(SQL_UNIQ_EXCEPTION_MESSAGE)) {
+        if (ex.getMessage() != null &&
+                ex.getMessage().contains(SQL_UNIQ_EXCEPTION_MESSAGE)) {
             return true;
         }
         var cause = ex.getCause();
-        return (cause != null) && isSQLUniqueException(cause);
+        return (cause != null) &&
+                isSQLUniqueException(cause);
     }
 
     public static String stacktrace(Throwable e) {
@@ -44,7 +49,9 @@ public class ExceptionUtils {
     public static void wrapError(Context context, Exception ex) {
         String cause;
         if (ex instanceof ValidationException) {
-            cause = ExceptionUtils.validationMessages((io.javalin.core.validation.ValidationException) ex);
+            cause = ExceptionUtils
+                    .validationMessages((io
+                            .javalin.core.validation.ValidationException) ex);
         } else {
             cause = ex.getMessage();
             JavalinLogger.error("Exception:", ex);

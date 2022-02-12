@@ -38,7 +38,8 @@ public class ProfileController extends AbstractController {
         user.setDbPassword(context.formParam("db-password"));
         JavalinLogger.info(user.toString());
         UserService.save(user);
-        DbUserService.dbUserPasswordReset(user.getUsername(), user.getDbPassword());
+        DbUserService.dbUserPasswordReset(user.getUsername(),
+                user.getDbPassword());
         context.sessionAttribute(Keys.INFO_KEY, "DB user password was changed");
         context.redirect(BASIC_PAGE);
     }
@@ -58,15 +59,19 @@ public class ProfileController extends AbstractController {
         user.setPrivateKey(StringUtils.randomAlphaString(20));
         user.setPublicKey(StringUtils.randomAlphaString(20));
         UserService.save(user);
-        context.sessionAttribute(Keys.INFO_KEY, "API keys was reset successful");
+        context.sessionAttribute(Keys.INFO_KEY,
+                "API keys was reset successful");
         context.redirect(BASIC_PAGE);
     }
 
     public static void upgradeUser(Context context) {
         User user = currentUser(context);
-        user.setRole(UserRole.valueOf(context.formParam("role")).getValue());
+        user.setRole(UserRole
+                .valueOf(context.formParam("role"))
+                .getValue());
         UserService.save(user);
-        context.sessionAttribute(Keys.INFO_KEY, "Role has been changed");
+        context.sessionAttribute(Keys.INFO_KEY,
+                "Role has been changed");
         context.redirect(BASIC_PAGE);
     }
 
@@ -80,13 +85,20 @@ public class ProfileController extends AbstractController {
     }
 
     public void register(Javalin app) {
-        app.get(BASIC_PAGE + "/lang", ProfileController::language, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "/reset-password", ProfileController::resetWebPassword, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "/reset-db", ProfileController::resetDbPassword, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "/reset-api", ProfileController::resetApiPassword, UserRole.AUTHED);
+        app.get(BASIC_PAGE + "/lang",
+                ProfileController::language, UserRole.AUTHED);
+        app.post(BASIC_PAGE + "/reset-password",
+                ProfileController::resetWebPassword, UserRole.AUTHED);
+        app.post(BASIC_PAGE + "/reset-db",
+                ProfileController::resetDbPassword, UserRole.AUTHED);
+        app.post(BASIC_PAGE + "/reset-api",
+
+                ProfileController::resetApiPassword, UserRole.AUTHED);
         app.post(BASIC_PAGE + "/upgrade", ProfileController::upgradeUser, UserRole.AUTHED);
-        app.post(BASIC_PAGE + "/remove-self", ProfileController::removeSelf, UserRole.AUTHED);
-        app.get(BASIC_PAGE, ProfileController::show, UserRole.AUTHED);
+        app.post(BASIC_PAGE + "/remove-self",
+                ProfileController::removeSelf, UserRole.AUTHED);
+        app.get(BASIC_PAGE, ProfileController::show,
+                UserRole.AUTHED);
     }
 
 }

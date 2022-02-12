@@ -15,7 +15,8 @@ public class CustomAccessManager {
     /**
      * Access manager to block unauthorized api calls
      */
-    public static final AccessManager accessManager = (handler, ctx, permittedRoles) -> {
+    public static final AccessManager accessManager =
+            (handler, ctx, permittedRoles) -> {
         if (permittedRoles.size() == 0) {
             //No roles->no permission check
             handler.handle(ctx);
@@ -27,13 +28,20 @@ public class CustomAccessManager {
             handler.handle(ctx);
             return;
         }
-        JavalinLogger.info(String.format("Permission deny to %s for %s", ctx.contextPath(), (user == null) ? "NoUser" : user.toString()));
-        ctx.redirect(userRole == UserRole.ANYONE ? LoginController.BASIC_PAGE : HomeController.BASIC_PAGE, 302);
+        JavalinLogger.info(String.format("Permission deny to %s for %s",
+                ctx.contextPath(),
+                (user == null) ? "NoUser" :
+                        user.toString()));
+        ctx.redirect(userRole == UserRole.ANYONE ?
+                LoginController.BASIC_PAGE :
+                HomeController.BASIC_PAGE, 302);
     };
 
     private static UserRole getUserRole(User currentUser) {
-        UserRole role = (currentUser == null) ? UserRole.ANYONE : currentUser.role();
-        JavalinLogger.info(String.format("User role %s", role.toString()));
+        UserRole role = (currentUser == null) ?
+                UserRole.ANYONE : currentUser.role();
+        JavalinLogger.info(String.format("User role %s",
+                role.toString()));
 
         return role;
     }

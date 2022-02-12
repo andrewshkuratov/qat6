@@ -1,12 +1,9 @@
 package com.epam.sum_university.pageobject;
 
-import com.epam.sum_university.factory.WebDriverFactory;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
@@ -21,15 +18,21 @@ public abstract class BasePage {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
+
     public void cleanDir(String s) throws IOException {
         File dir = new File("src/test/resources/screenshots/" + s + "/");
         FileUtils.cleanDirectory(dir);
     }
+
     public void capture(String s) throws IOException {
-        File source = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+        File source = ((TakesScreenshot) webDriver)
+                .getScreenshotAs(OutputType.FILE);
         LocalDateTime time = LocalDateTime.now();
-        String formatDate = time.format(DateTimeFormatter.ofPattern("dd_MM_yy-HH_mm_ss"));
-        File dir = new File("src/test/resources/screenshots/" + s + "/");
+        String formatDate = time.format(DateTimeFormatter
+                .ofPattern("dd_MM_yy-HH_mm_ss"));
+        File dir = new File("src/test/resources/screenshots/"
+                + s
+                + "/");
         String path = "src/test/resources/screenshots/"
                 + s
                 + "/"

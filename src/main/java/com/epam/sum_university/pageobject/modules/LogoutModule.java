@@ -16,7 +16,9 @@ public class LogoutModule extends BasePage {
 
     public boolean getLoginField() {
         logoutButton = new WebDriverWait(webDriver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"floatingInput\"]")));
+                .until(ExpectedConditions
+                        .visibilityOfElementLocated(By
+                                .xpath("//*[@id=\"floatingInput\"]")));
         return logoutButton.isDisplayed();
     }
 }

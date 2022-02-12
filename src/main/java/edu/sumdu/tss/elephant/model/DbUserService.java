@@ -9,26 +9,41 @@ import java.io.File;
 
 public class DbUserService {
 
-    private static final ParameterizedStringFactory CREATE_USER_SQL = new ParameterizedStringFactory("CREATE USER :name WITH PASSWORD ':password' CONNECTION LIMIT 5 IN ROLE customer;");
-    private static final ParameterizedStringFactory DELETE_USER_SQL = new ParameterizedStringFactory("DROP USER :name");
+    private static final ParameterizedStringFactory
+            CREATE_USER_SQL =
+            new ParameterizedStringFactory(
+                    "CREATE USER :name WITH PASSWORD ':password' CONNECTION LIMIT 5 IN ROLE customer;");
+    private static final ParameterizedStringFactory
+            DELETE_USER_SQL =
+            new ParameterizedStringFactory(
+                    "DROP USER :name");
 
     public static void initUser(String username, String password) {
         //Create user
         System.out.println("Username: " + username);
-        String createUserString = CREATE_USER_SQL.addParameter("name", username).addParameter("password", password).toString();
+        String createUserString = CREATE_USER_SQL
+                .addParameter("name", username)
+                .addParameter("password", password).toString();
         System.out.println(createUserString);
-        DBPool.getConnection().open().createQuery(createUserString, false).executeUpdate();
+        DBPool.getConnection().open()
+                .createQuery(createUserString, false)
+                .executeUpdate();
         //Create tablespace
         String path = UserService.userStoragePath(username);
         System.out.println("Tablespace path:" + path);
-        UserService.createTablespace(username, path + File.separator + "tablespace");
+        UserService.createTablespace(username, path
+                + File.separator + "tablespace");
     }
 
     //TODO: SQL injection here!
-    private static final ParameterizedStringFactory RESET_USER_SQL = new ParameterizedStringFactory("ALTER USER :name WITH PASSWORD ':password'");
+    private static final ParameterizedStringFactory
+            RESET_USER_SQL =
+            new ParameterizedStringFactory(
+                    "ALTER USER :name WITH PASSWORD ':password'");
 
     public static void dbUserPasswordReset(String name, String password) {
-        String query = RESET_USER_SQL.addParameter("name", name).addParameter("password", password).toString();
+        String query = RESET_USER_SQL.addParameter("name", name)
+                .addParameter("password", password).toString();
         JavalinLogger.info(query);
         DBPool.getConnection().open().createQuery(query, false).executeUpdate();
     }

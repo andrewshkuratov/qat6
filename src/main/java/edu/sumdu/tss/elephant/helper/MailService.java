@@ -31,9 +31,11 @@ public class MailService {
         properties.put("mail.smtp.port", Keys.get("EMAIL.PORT"));
         properties.put("mail.smtp.ssl.enable", Keys.get("EMAIL.SSL"));
         properties.put("mail.smtp.auth", "true");
-        session = Session.getInstance(properties, new javax.mail.Authenticator() {
+        session = Session.getInstance(properties,
+                new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Keys.get("EMAIL.USER"), Keys.get("EMAIL.PASSWORD"));
+                return new PasswordAuthentication(Keys.get("EMAIL.USER"),
+                        Keys.get("EMAIL.PASSWORD"));
             }
         });
         //session.setDebug(true);
@@ -45,21 +47,28 @@ public class MailService {
      * @param token  activation token
      * @param mailTo user email
      */
-    public static void sendActivationLink(String token, String mailTo, Lang lang) throws MessagingException {
+    public static void sendActivationLink(String token, String mailTo, Lang lang)
+            throws MessagingException {
         Message message = new MimeMessage(mail.session);
         message.setFrom(new InternetAddress(mail.from));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
         message.setSubject(new MessageBundle(lang.toString()).get("mail.conformation"));
-        message.setContent(generateContent("mail_conformation", new Object[] {Keys.get("APP.URL"), token}, lang));
+        message.setContent(generateContent(
+                "mail_conformation",
+                new Object[] {Keys.get("APP.URL"), token}, lang));
         Transport.send(message);
     }
 
-    public static void sendResetLink(String token, String mailTo, Lang lang) throws MessagingException {
+    public static void sendResetLink(String token, String mailTo, Lang lang)
+            throws MessagingException {
         Message message = new MimeMessage(mail.session);
         message.setFrom(new InternetAddress(mail.from));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
         message.setSubject(new MessageBundle(lang.toString()).get("mail.reset"));
-        message.setContent(generateContent("password_reset", new Object[] {Keys.get("APP.URL"), token}, lang));
+        message.setContent(generateContent(
+                "password_reset",
+                new Object[] {Keys.get("APP.URL"),
+                        token}, lang));
         Transport.send(message);
     }
 
