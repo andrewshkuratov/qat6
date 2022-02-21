@@ -6,16 +6,16 @@ controls:
     reset: Reset
     delete: Delete
     sign_in: "Sign In"
-    sign_up: "Sign Up"
+    sign_up: "Register"
     logout: "Logout"
     update: "Update"
 registration:
   form:
     email: "Email address"
     password: "Password"
-    password_c: "Password conformation"
-    button: "Sign up"
-    disclamer: "By clicking <b>Sign up</b>, you agree to the terms of use."
+    password_c: "Password confirmation"
+    button: "Register"
+    disclamer: "By clicking <b>Register</b>, you agree to the terms of use."
 login:
   SignIn: "Sign me in, please"
   form:
@@ -24,20 +24,20 @@ login:
     remember_me: "Remember me"
     forgot: "Forgot password?"
     disclamer: "By clicking Sign in, you agree to the terms of use."
-    password_c: "Password conformation"
+    password_c: "Password confirmation"
     button: "Sign in"
   reset:
     title: "Identify yourself"
     email: "Your email"
     email_helper: "Email (username) of your user"
     button: "Send link for password recovery"
-    success_send: "Mail with conformation link was sent. Check yor mailbox."
+    success_send: "Mail with confirmation link was sent. Check yor mailbox."
     success_reset: "Password has been reset"
   reset_password:
     title: "Chose new password"
     password: "Password"
     password_helper: "Password for web user"
-    password_c: "Password conformation"
+    password_c: "Password confirmation"
     password_c_helper: "Repeat same password"
     button: "Reset bassword"
 mail:
@@ -81,7 +81,7 @@ database:
     empty: "Currently you have no one script"
     form:
       title: "New scripts"
-      upload_button: "Upload new script"
+      upload_button: "Upload script"
     run:
       statement: "Statement"
       result: "Result"
