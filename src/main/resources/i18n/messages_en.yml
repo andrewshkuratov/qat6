@@ -81,7 +81,7 @@ database:
     empty: "Currently you have no one script"
     form:
       title: "New scripts"
-      upload_button: "Upload new script"
+      upload_button: "Upload script"
     run:
       statement: "Statement"
       result: "Result"
