@@ -6,7 +6,7 @@ controls:
     reset: Reset
     delete: Delete
     sign_in: "Sign In"
-    sign_up: "Sign Up"
+    sign_up: "Register"
     logout: "Logout"
     update: "Update"
 registration:
@@ -14,8 +14,8 @@ registration:
     email: "Email address"
     password: "Password"
     password_c: "Password conformation"
-    button: "Sign up"
-    disclamer: "By clicking <b>Sign up</b>, you agree to the terms of use."
+    button: "Register"
+    disclamer: "By clicking <b>Register</b>, you agree to the terms of use."
 login:
   SignIn: "Sign me in, please"
   form:
